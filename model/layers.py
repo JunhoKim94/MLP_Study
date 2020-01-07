@@ -16,6 +16,7 @@ class Init_Layer:
         self.x = x
         
         output = np.matmul(self.x,self.W) + self.b
+        #print(output)
         output = self.activation.forward(output)
 
         return output
@@ -48,7 +49,7 @@ class Hidden_layer:
         self.x = x
         
         output = np.matmul(self.x,self.W) + self.b
-        output = self.activation(output)
+        output = self.activation.forward(output)
 
         return output
 
@@ -65,7 +66,7 @@ class Hidden_layer:
         self.db = np.sum(l, axis = 0)
 
         #to update front hidden layer
-        dx = np.matmul(l.T, self.W)
+        dx = np.matmul(l,self.W.T)
 
         return dx
 
@@ -89,7 +90,7 @@ class SoftmaxwithLoss:
         self.x = x
         self.y = y
 
-        self.y_pred = self.predict(self.x,self.y)
+        self.y_pred = self.predict(self.x)
         self.loss = self.ce_loss(self.y_pred, self.y)
 
         return self.loss
@@ -136,9 +137,9 @@ class SoftmaxwithLoss:
         
         return loss
 
-    def predict(self, x, y):
+    def predict(self, x):
 
-        output = np.matmul(self.x.T, self.W) + self.b
+        output = np.matmul(x, self.W) + self.b
         output = self.softmax(output)
 
         return output

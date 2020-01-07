@@ -34,6 +34,7 @@ class ReLU:
         z < 0 --> 0
         '''
         self.zero_mask = z < 0
+        self.output = np.copy(z)
         self.output[self.zero_mask] = 0
 
         return self.output
