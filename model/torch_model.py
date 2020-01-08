@@ -4,24 +4,26 @@ import torch.nn.functional as F
 
 class torch_MLP(nn.Module):
 
-    def __init__(self, input_size, hidden1, hidden2, hidden3, output_size):
+    def __init__(self, input_size, hidden, output_size):
         super(torch_MLP, self).__init__()
         
 
         self.input = input_size
-        self.hidden1 =hidden1
-        self.hidden2 = hidden2
-        self.hidden3 = hidden3
         self.output_size = output_size
+        self.hidden = hidden
+
+        module = [
+            nn.Linear(self.input,self.hidden[0]),
+            nn.ReLU()
+        ]
+        for i in range(len(self.hidden) - 1):
+            module.append(nn.Linear(self.hidden[i], self.hidden[i+1]))
+            module.append(nn.ReLU())
+
+        module.append(nn.Linear(self.hidden[-1], output_size))
 
         self.linear = nn.Sequential(
-            nn.Linear(self.input,self.hidden1),
-            nn.ReLU(),
-            nn.Linear(self.hidden1, self.hidden2),
-            nn.ReLU(),
-            nn.Linear(self.hidden2, self.hidden3),
-            nn.ReLU(),
-            nn.Linear(self.hidden3, self.output_size)
+            *module
         )
 
     def forward(self, x):

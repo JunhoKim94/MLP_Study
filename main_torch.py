@@ -29,8 +29,9 @@ y_val = torch.Tensor(y_val).to(torch.long)
 epochs = 1000
 batch_size = 100
 learning_rate= 0.05
+hidden = [30,20,10]
 
-model = torch_MLP(input_size= num_feature, hidden1 = 30, hidden2= 20, hidden3 = 10, output_size = output_size)
+model = torch_MLP(input_size= num_feature, hidden = hidden, output_size = output_size)
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr = learning_rate, momentum= 0.6)
 #optimizer = torch.optim.Adam(model.parameters(), lr = learning_rate)
