@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import numpy as np
 from utils import load_fashion_mnist
 from model.torch_model import torch_MLP
-
+import time
 
 np.random.seed(19941017)
 
@@ -26,18 +26,18 @@ y_train = torch.Tensor(y_train)
 x_val = torch.Tensor(x_val)
 y_val = torch.Tensor(y_val).to(torch.long)
 
-epochs = 1000
-batch_size = 100
-learning_rate= 0.05
-hidden = [30,20,10]
+epochs = 1500
+batch_size = 50
+learning_rate= 0.001
+hidden = [50,30,20,10]
 
 model = torch_MLP(input_size= num_feature, hidden = hidden, output_size = output_size)
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), lr = learning_rate, momentum= 0.6)
-#optimizer = torch.optim.Adam(model.parameters(), lr = learning_rate)
+#optimizer = torch.optim.SGD(model.parameters(), lr = learning_rate, momentum= 0)
+optimizer = torch.optim.Adam(model.parameters(), lr = learning_rate)
 
 model.train()
-
+st = time.time()
 for epoch in range(epochs + 1):
     epoch_loss = 0.0
 
@@ -73,4 +73,6 @@ for epoch in range(epochs + 1):
     val_score = len(val_output[val_output == y_val])/ len(y_val)
     
     if epoch % 100 == 0:
-        print(f"epoch : {epoch} | trian_loss : {epoch_loss} | val_loss : {val_loss} | val_score : {val_score}")
+        print(f"epoch : {epoch} | trian_loss : {epoch_loss} | val_loss : {val_loss} | val_score : {val_score} | epoch_time : {time.time() - st}")
+
+print(f"total_time : {time.time() - st}")

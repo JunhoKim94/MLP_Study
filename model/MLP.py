@@ -25,7 +25,7 @@ class MLP:
             temp = copy.deepcopy(optimizer)
             self.optimizer.append(temp)
 
-        print(self.optimizer)
+        #print(self.optimizer)
         self.learning_rate = learning_rate
 
     def predict(self, x):
