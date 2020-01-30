@@ -4,21 +4,21 @@ import numpy as np
 import copy
 
 class MLP:
-    def __init__(self, input_size, optimizer, output_size,  learning_rate, hidden):
+    def __init__(self, input_size, optimizer, output_size,  learning_rate, hidden, initialize = "xavier"):
 
         self.layers = [
-                        Init_Layer(input_size , hidden[0], ReLU()),
+                        Init_Layer(input_size , hidden[0], ReLU() , initialize),
                         #Hidden_layer(hidden[0], hidden[1], ReLU()),
                         #Hidden_layer(hidden[1], hidden[2], ReLU())
                         ]
         #[10,10,10,10]
         
         for i in range(len(hidden) - 1):
-            h = Hidden_layer(hidden[i], hidden[i+1], ReLU())
+            h = Hidden_layer(hidden[i], hidden[i+1], ReLU(), initialize)
             self.layers.append(h)
         print(self.layers)
         
-        self.output_layer = SoftmaxwithLoss(hidden[-1], output_size)
+        self.output_layer = SoftmaxwithLoss(hidden[-1], output_size, initialize)
         self.optimizer = []
 
         for i in range(len(self.layers) + 2):

@@ -1,9 +1,16 @@
 import numpy as np
 
 class Init_Layer:
-    def __init__(self, input_size, hidden_size, activation):
+    def __init__(self, input_size, hidden_size, activation, initialize = "xavier"):
         #W : input (D X H), b = H
-        self.W, self.b = np.random.normal(size = (input_size,hidden_size)), np.random.normal(size = hidden_size)
+        if initialize.lower() == "xavier":
+            n = (6/(input_size + hidden_size))**0.5
+        elif initialize.lower() == "kaiming":
+            n = (6 / input_size)**0.5
+        else:
+            n = 1
+        self.W = np.random.uniform(low = -n, high = n, size = (input_size, hidden_size))        
+        self.b = np.zeros(hidden_size)
         self.dW , self.db = None, None
         self.activation = activation
 
@@ -34,9 +41,16 @@ class Init_Layer:
         self.db = np.sum(l, axis = 0)
 
 class Hidden_layer:
-    def __init__(self, input_size, hidden_size, activation):
+    def __init__(self, input_size, hidden_size, activation, initialize = "xavier"):
         #W : input (D X H), b = H
-        self.W, self.b = np.random.normal(size = (input_size,hidden_size)), np.random.normal(size = hidden_size)
+        if initialize.lower() == "xavier":
+            n = (6/(input_size + hidden_size))**0.5
+        elif initialize.lower() == "kaiming":
+            n = (6 / input_size)**0.5
+        else:
+            n = 1
+        self.W = np.random.uniform(low = -n, high = n, size = (input_size, hidden_size))        
+        self.b = np.zeros(hidden_size)
         self.dW , self.db = None, None
         self.activation = activation
 
@@ -71,9 +85,16 @@ class Hidden_layer:
         return dx
 
 class SoftmaxwithLoss:
-    def __init__(self, input_size, output_size):
+    def __init__(self, input_size, output_size, initialize = "xavier"):
         #inputsize = D, outputsize = O
-        self.W, self.b = np.random.normal(size = (input_size,output_size)), np.random.normal(size = output_size)
+        if initialize.lower() == "xavier":
+            n = (6/(input_size + hidden_size))**0.5
+        elif initialize.lower() == "kaiming":
+            n = (6 / input_size)**0.5
+        else:
+            n = 1
+        self.W = np.random.uniform(low = -n, high = n, size = (input_size, output_size))        
+        self.b = np.zeros(output_size)        
         self.dW, self.db = None, None
         self.x , self.y = None,None
         self.y_pred = None

@@ -16,15 +16,15 @@ num_feature = x_train.shape[1]
 total_num = len(x_train)
 val_num = len(x_test)
 output_size = y_train.shape[1]
-print(f"feature number : {num_feature} | train_ data_number : {total_num} | validation_data_number : {val_num} | class : {output_size}")
+print(f"feature number : {num_feature} | train_data_number : {total_num} | validation_data_number : {val_num} | class : {output_size}")
 
 hidden = [30,20,10]
 
-#optimizer = SGD()
+optimizer = SGD()
 #optimizer = Momentum(0.6)
 #optimizer = Adam()
-optimizer = RMSProp(0.6, 1e-6)
-model = MLP(optimizer = optimizer, learning_rate= learning_rate, input_size= num_feature, output_size = output_size, hidden = hidden)
+#optimizer = RMSProp(0.6, 1e-6)
+model = MLP(optimizer = optimizer, learning_rate= learning_rate, input_size= num_feature, output_size = output_size, hidden = hidden, initialize= 'kaiming')
 
 for epoch in range(epochs + 1):
     epoch_loss = 0.0
