@@ -11,7 +11,7 @@ x_train, y_train, x_test, y_test = load_fashion_mnist('./data')
 
 epochs = 1000
 batch_size = 50
-learning_rate= 0.0005
+learning_rate= 0.001
 
 num_feature = x_train.shape[1]
 total_num = len(x_train)
@@ -21,11 +21,11 @@ print(f"feature number : {num_feature} | train_data_number : {total_num} | valid
 
 hidden = [50,30,20,10]
 
-optimizer = SGD()
+#optimizer = SGD()
 #optimizer = Momentum(0.6)
-#optimizer = Adam()
+optimizer = Adam()
 #optimizer = RMSProp(0.6, 1e-6)
-model = MLP(optimizer = optimizer, learning_rate= learning_rate, input_size= num_feature, output_size = output_size, hidden = hidden, initialize= 'kaiming')
+model = MLP(optimizer = optimizer, learning_rate= learning_rate, input_size= num_feature, output_size = output_size, hidden = hidden, initialize= 'none')
 
 
 st = time.time()

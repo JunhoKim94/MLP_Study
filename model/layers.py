@@ -88,7 +88,7 @@ class SoftmaxwithLoss:
     def __init__(self, input_size, output_size, initialize = "xavier"):
         #inputsize = D, outputsize = O
         if initialize.lower() == "xavier":
-            n = (6/(input_size + hidden_size))**0.5
+            n = (6/(input_size + output_size))**0.5
         elif initialize.lower() == "kaiming":
             n = (6 / input_size)**0.5
         else:
