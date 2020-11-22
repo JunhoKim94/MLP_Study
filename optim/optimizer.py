@@ -72,15 +72,19 @@ class RMSProp:
         return updated_weight
 
 class Adam:
-    def __init__(self, beta_1 = 0.9, beta_2 = 0.999):
+    def __init__(self, beta_1 = 0.9, beta_2 = 0.999, weight_decay = 1e-5):
         self.beta_1 = beta_1
         self.beta_2 = beta_2
         self.m = dict()
         self.v = dict()
         self.iter = 0
+        self.weight_decay = weight_decay
+
 
     def update(self, w, grad, lr):
-                
+
+        grad = grad + self.weight_decay * w        
+        
         if self.v.get(grad.shape) is None or self.m.get(grad.shape) is None:
             self.v[grad.shape] = np.zeros_like(grad)
             self.m[grad.shape] = np.zeros_like(grad)
@@ -94,3 +98,4 @@ class Adam:
         updated_weight = w - lr_t * self.m[grad.shape] / (np.sqrt(self.v[grad.shape]) + 1e-7)
 
         return updated_weight
+

@@ -16,7 +16,6 @@ class MLP:
         for i in range(len(hidden) - 1):
             h = Hidden_layer(hidden[i], hidden[i+1], ReLU(), initialize)
             self.layers.append(h)
-        print(self.layers)
         
         self.output_layer = SoftmaxwithLoss(hidden[-1], output_size, initialize)
         self.optimizer = []
@@ -28,12 +27,20 @@ class MLP:
         #print(self.optimizer)
         self.learning_rate = learning_rate
 
+    def zero_grad(self):
+        self.output_layer.dW = None
+        self.output_layer.db = None
+
+        for layer in self.layers:
+            layer.dW = None
+            layer.db = None
+
+
     def predict(self, x):
         for layer in self.layers:
             x = layer.forward(x)
         
         y_pred = self.output_layer.predict(x)
-
         pred = np.argmax(y_pred, axis = -1)
 
         return pred
@@ -60,3 +67,4 @@ class MLP:
         for i , layer in enumerate(self.layers[:-1]):
             layer.W = self.optimizer[i].update(layer.W, layer.dW, self.learning_rate)
             layer.b = self.optimizer[i].update(layer.b, layer.db, self.learning_rate)
+
