@@ -11,9 +11,10 @@ x_train, y_train, x_test, y_test = load_fashion_mnist('./data')
 x_train, x_val , y_train, y_val = train_test_split(x_train, y_train, test_size = 0.2)
 
 
-epochs = 500
+epochs = 200
 batch_size = 50
 learning_rate= 0.001
+verbose = 10
 
 num_feature = x_train.shape[1]
 total_num = len(x_train)
@@ -71,7 +72,7 @@ for epoch in range(epochs + 1):
     val_acc_stack.append(val_score)
     loss_stack.append(epoch_loss)
 
-    if (epoch % 50) == 0:
+    if (epoch % verbose) == 0:
         print(f"epoch : {epoch} | loss : {epoch_loss} | train_score : {score} | validation score : {val_score} | epoch_time : {time.time() - st}")
 
     if best_score < val_score:
@@ -85,3 +86,25 @@ test_target = np.argmax(y_test, axis = 1)
 test_score = len(np.where(val_pred == val_target)[0]) / len(val_target)
 
 print(test_score)
+
+def plot_graph(loss_stack, acc_stack, val_acc_stack):
+    a = [i for i in range(epochs + 1)]
+    
+    #plt.figure(figsize = (10,8))
+    fig , ax1 = plt.subplots()
+    ax2 = ax1.twinx()
+    acc = ax1.plot(a, acc_stack, 'r', label = 'Accuracy')
+    loss = ax2.plot(a, loss_stack, 'b', label = 'loss')
+    val_acc = ax1.plot(a, val_acc_stack, "g", label = "Val Accuracy")
+    plt.legend()
+    ax1.set_xlabel('epochs')
+    ax2.set_ylabel('loss')
+    ax1.set_ylabel("accuracy")
+
+    ax = acc + loss + val_acc
+    labels = [l.get_label() for l in ax]
+    plt.legend(ax, labels, loc =2)
+
+    plt.show()
+
+plot_graph(loss_stack, acc_stack, val_acc_stack)
