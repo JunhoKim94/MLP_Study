@@ -61,7 +61,8 @@ class Adam:
     def update(self, w, grad, lr):
 
         grad = grad + self.weight_decay * w        
-        
+        #TODO 
+        #Change dictionaries keys to name of weights
         if self.v.get(grad.shape) is None or self.m.get(grad.shape) is None:
             self.v[grad.shape] = np.zeros_like(grad)
             self.m[grad.shape] = np.zeros_like(grad)
