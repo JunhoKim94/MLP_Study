@@ -7,14 +7,13 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
 x_train, y_train, x_test, y_test = load_fashion_mnist('./data')
-
 x_train, x_val , y_train, y_val = train_test_split(x_train, y_train, test_size = 0.2)
 
-
-epochs = 200
-batch_size = 50
+epochs = 60
+batch_size = 32
 learning_rate= 0.001
-verbose = 10
+verbose = 5
+weight_decay = 1e-3
 
 num_feature = x_train.shape[1]
 total_num = len(x_train)
@@ -28,7 +27,7 @@ hidden = [80,40]
 
 #optimizer = SGD()
 #optimizer = Momentum(0.6)
-optimizer = Adam(beta_1 = 0.9, beta_2 = 0.999, weight_decay = 1e-2)
+optimizer = Adam(beta_1 = 0.9, beta_2 = 0.999, weight_decay = weight_decay)
 #optimizer = RMSProp(0.6, 1e-6)
 model = MLP(optimizer = optimizer, 
             learning_rate= learning_rate, 
@@ -73,14 +72,16 @@ for epoch in range(epochs + 1):
     loss_stack.append(epoch_loss)
 
     if (epoch % verbose) == 0:
-        print(f"epoch : {epoch} | loss : {epoch_loss} | train_score : {score} | validation score : {val_score} | epoch_time : {time.time() - st}")
+        spend = round((time.time() - st), 3)
+        print(f"epoch : {epoch} | loss : {epoch_loss} | train_score : {score} | validation score : {val_score} | time : {spend} seconds")
 
     if best_score < val_score:
         best_score = val_score
+        model.save_weights("./best.pickle")
 
 print(f"total_time : {time.time() - st}")
 
-
+model.load_weights("./best.pickle")
 test_pred = model.predict(x_test)
 test_target = np.argmax(y_test, axis = 1)
 test_score = len(np.where(val_pred == val_target)[0]) / len(val_target)

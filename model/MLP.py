@@ -2,6 +2,7 @@ from model.layers import Init_Layer, Hidden_layer, SoftmaxwithLoss
 from model.Activation import Sigmoid, ReLU
 import numpy as np
 import copy
+import pickle
 
 class MLP:
     def __init__(self, input_size, optimizer, output_size,  learning_rate, hidden, initialize = "xavier"):
@@ -68,3 +69,21 @@ class MLP:
             layer.W = self.optimizer[i].update(layer.W, layer.dW, self.learning_rate)
             layer.b = self.optimizer[i].update(layer.b, layer.db, self.learning_rate)
 
+    def save_weights(self, save_path):
+        weights = []
+        for layer in self.layers:
+            weights.append([layer.W, layer.b])
+        
+        save_dict = {"weights" : weights}
+        with open(save_path, "wb") as f:
+            pickle.dump(save_dict, f)
+    
+    def load_weights(self, save_path):
+        with open(save_path, "rb") as f:
+            a = pickle.load(f)
+        
+        weights = a["weights"]
+
+        for idx, layer in enumerate(self.layers):
+            layer.W = weights[idx][0]
+            layer.b = weights[idx][1]

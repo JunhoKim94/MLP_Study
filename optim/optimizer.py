@@ -2,7 +2,7 @@ import numpy as np
 
 class SGD:
     def __init__(self):
-
+        pass
     def update(self, w, grad, lr):
         updated_weight = None
         updated_weight = w - lr * grad
